@@ -64,17 +64,31 @@ namespace StarChart.Controllers
             return CreatedAtRoute("GetById", new { id = celestialObject.Id }, celestialObject);
         }
 
+        //[HttpPut("{id}")]
+        //public IActionResult Update(CelestialObject celestialObject, int id)
+        //{
+        //    var celestialObjectFound = _context.CelestialObjects.Find(id);
+        //    if (celestialObjectFound == null) return NotFound();
+
+        //    celestialObjectFound.Name = celestialObject.Name;
+        //    celestialObjectFound.OrbitalPeriod = celestialObject.OrbitalPeriod;
+        //    celestialObjectFound.OrbitedObject = celestialObject.OrbitedObject;
+
+        //    _context.CelestialObjects.Update(celestialObjectFound);
+        //    _context.SaveChanges();
+        //    return NoContent();
+        //}
+
         [HttpPut("{id}")]
-        public IActionResult Update(CelestialObject celestialObject, int id)
+        public IActionResult Update(int id, CelestialObject celestialObject)
         {
-            var celestialObjectFound = _context.CelestialObjects.Find(id);
-            if (celestialObjectFound == null) return NotFound();
-
-            celestialObjectFound.Name = celestialObject.Name;
-            celestialObjectFound.OrbitalPeriod = celestialObject.OrbitalPeriod;
-            celestialObjectFound.OrbitedObject = celestialObject.OrbitedObject;
-
-            _context.CelestialObjects.Update(celestialObjectFound);
+            var existingObject = _context.CelestialObjects.Find(id);
+            if (existingObject == null)
+                return NotFound();
+            existingObject.Name = celestialObject.Name;
+            existingObject.OrbitalPeriod = celestialObject.OrbitalPeriod;
+            existingObject.OrbitedObject = celestialObject.OrbitedObject;
+            _context.CelestialObjects.Update(existingObject);
             _context.SaveChanges();
             return NoContent();
         }
@@ -92,14 +106,14 @@ namespace StarChart.Controllers
             return NoContent();
         }
 
-        //[HttpDelete("{id}")]
-        //public IActionResult Delete(int id)
-        //{
-        //    var celestialObjectFound = _context.CelestialObjects.SingleOrDefault(co => co.Id == id);
-            
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var celestialObjectFound = _context.CelestialObjects.SingleOrDefault(co => co.Id == id);
 
-            
-        //    if (celestialObjectFound == null) return NotFound();
-        //}
+
+
+            if (celestialObjectFound == null) return NotFound();
+        }
     }
 }
