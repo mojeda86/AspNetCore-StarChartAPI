@@ -46,7 +46,11 @@ namespace StarChart.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var allCelestialObjectFound = _context.CelestialObjects.Include(co => co.Satellites);
+            var allCelestialObjectFound = _context.CelestialObjects;
+            foreach (var item in allCelestialObjectFound)
+            {
+                item.Satellites = _context.CelestialObjects.Where(co => co.OrbitedObjectId == item.Id).ToList();
+            }
             return Ok(allCelestialObjectFound);
         }
     }
