@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
+using StarChart.Models;
 using Xunit;
 
 namespace StarChartTests
@@ -57,9 +58,9 @@ namespace StarChartTests
             var model = TestHelpers.GetUserType("StarChart.Models.CelestialObject");
             Assert.True(model != null, "A `public` class `CelestialObject` was not found in the `StarChart.Models` namespace.");
 
-            var property = model.GetProperty("OrbitedObjectId");
+            var property = model.GetProperty("OrbitedObject");
             Assert.True(property != null, "A `public` property `OrbitedObjectId` was not found in the `CelestialObject` class.");
-            Assert.True(property.PropertyType == typeof(int?), "A `public` property `OrbitedObjectId` was found in `CelestialObject`, but was not of type `int?`.");
+            Assert.True(property.PropertyType == typeof(CelestialObject), "A `public` property `OrbitedObjectId` was found in `CelestialObject`, but was not of type `int?`.");
         }
 
         [Fact(DisplayName = "Add Satellites Property @add-satellites-property")]
