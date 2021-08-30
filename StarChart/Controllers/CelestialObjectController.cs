@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using StarChart.Data;
 using StarChart.Models;
 
@@ -81,13 +76,12 @@ namespace StarChart.Controllers
         [HttpPatch("{id}/{name}")]
         public IActionResult RenameObject(int id, string name)
         {
-            var celestialObjectFound = _context.CelestialObjects.SingleOrDefault(co => co.Id == id);
-            if (celestialObjectFound == null) return NotFound();
-
-            celestialObjectFound.Name = name;
-            _context.Update(celestialObjectFound);
+            var existingObject = _context.CelestialObjects.Find(id);
+            if (existingObject == null)
+                return NotFound();
+            existingObject.Name = name;
+            _context.CelestialObjects.Update(existingObject);
             _context.SaveChanges();
-
             return NoContent();
         }
 
