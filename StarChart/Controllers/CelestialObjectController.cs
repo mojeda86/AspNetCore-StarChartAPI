@@ -67,14 +67,14 @@ namespace StarChart.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(CelestialObject celestialObject, int id)
         {
-            var celestialObjectFound = _context.CelestialObjects.SingleOrDefault(co => co.Id == id);
+            var celestialObjectFound = _context.CelestialObjects.Find(id);
             if (celestialObjectFound == null) return NotFound();
 
             celestialObjectFound.Name = celestialObject.Name;
             celestialObjectFound.OrbitalPeriod = celestialObject.OrbitalPeriod;
             celestialObjectFound.OrbitedObject = celestialObject.OrbitedObject;
 
-            _context.Update(celestialObjectFound);
+            _context.CelestialObjects.Update(celestialObjectFound);
             _context.SaveChanges();
             return NoContent();
         }
