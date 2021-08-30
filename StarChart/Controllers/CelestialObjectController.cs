@@ -16,7 +16,7 @@ namespace StarChart.Controllers
             _context = context;
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "GetById")]  //"Name" property explicity added in order that --> CreatedAtRoute(routeName, new { object that the endpoint expect, in this case for example "id" }, objectToReturn) works fine. 
         public IActionResult GetById(int id)
         {
             var celestialObject = _context.CelestialObjects.Find(id);
@@ -56,7 +56,7 @@ namespace StarChart.Controllers
             _context.CelestialObjects.Add(celestialObject);
             _context.SaveChanges();
 
-            return CreatedAtRoute("GetById", new { id = celestialObject.Id }, celestialObject);
+            return CreatedAtRoute("GetById", new { id = celestialObject.Id }, celestialObject); //return the route of the created object inside Headers -> Location, in this case http:localhost:portNumber/IdNumber
         }
 
         [HttpPut("{id}")]
