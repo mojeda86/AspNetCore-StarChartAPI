@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StarChart.Data;
+using StarChart.Models;
 
 namespace StarChart.Controllers
 {
@@ -53,5 +54,52 @@ namespace StarChart.Controllers
             }
             return Ok(allCelestialObjectFound);
         }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] CelestialObject celestialObject)
+        {
+            _context.CelestialObjects.Add(celestialObject);
+            _context.SaveChanges();
+
+            return CreatedAtRoute("GetById", new { id = celestialObject.Id });
+        }
+
+        [HttpPut("{id:int}")]
+        public IActionResult Update([FromBody] CelestialObject celestialObject, int id)
+        {
+            var celestialObjectFound = _context.CelestialObjects.SingleOrDefault(co => co.Id == id);
+            if (celestialObjectFound == null) return NotFound();
+
+            celestialObjectFound.Name = celestialObject.Name;
+            celestialObjectFound.OrbitalPeriod = celestialObject.OrbitalPeriod;
+            celestialObjectFound.OrbitalPeriod = celestialObject.OrbitalPeriod;
+
+            _context.Update(celestialObjectFound);
+            _context.SaveChanges();
+            return NoContent();
+        }
+
+        [HttpPatch("{id}/{name}")]
+        public IActionResult RenameObject(int id, string name)
+        {
+            var celestialObjectFound = _context.CelestialObjects.SingleOrDefault(co => co.Id == id);
+            if (celestialObjectFound == null) return NotFound();
+
+            celestialObjectFound.Name = name;
+            _context.Update(celestialObjectFound);
+            _context.SaveChanges();
+
+            return NoContent();
+        }
+
+        //[HttpDelete("{id}")]
+        //public IActionResult Delete(int id)
+        //{
+        //    var celestialObjectFound = _context.CelestialObjects.SingleOrDefault(co => co.Id == id);
+            
+
+            
+        //    if (celestialObjectFound == null) return NotFound();
+        //}
     }
 }
